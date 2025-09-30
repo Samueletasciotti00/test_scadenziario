@@ -1,0 +1,26 @@
+### TEST 1 - GET con localhost
+GET http://localhost:3333/deadlines
+Accept: application/json
+
+### TEST 2 - GET con 127.0.0.1
+GET http://127.0.0.1:3333/deadlines
+Accept: application/json
+
+### TEST 3 - GET con [::1] (IPv6 localhost)
+GET http://[::1]:3333/deadlines
+Accept: application/json
+
+### POST Create Deadline con 127.0.0.1
+POST http://127.0.0.1:3333/deadlines
+Content-Type: application/json
+Accept: application/json
+
+{
+  "title": "progetto_protezione_civile2",
+  "due_at": "2025-10-25T17:00:00.000Z",
+  "remind_at": "2025-10-24T09:00:00.000Z",
+  "status": "sospeso",
+  "repeat": "giornaliero",
+  "description": "Organizzare l'evento in sicurezza",
+  "user_id": 1
+}
