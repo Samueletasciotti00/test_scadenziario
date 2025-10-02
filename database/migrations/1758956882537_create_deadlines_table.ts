@@ -9,8 +9,8 @@ export default class extends BaseSchema {
       table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
       table.string('title').notNullable().defaultTo('no_title')
       table.text('description').nullable()
-      table.timestamp('due_at', { useTz: true })
-      table.timestamp('remind_at', { useTz: true })
+      table.timestamp('due_at', { useTz: true }) // Scadenza
+      table.timestamp('remind_at', { useTz: true }) // Promemoria
       table.enum('status', ['sospeso', 'completato', 'scaduto']).defaultTo('sospeso') // ATTESA - COMPLETATO - SCADUTO
       table.enum('repeat', ['giornaliero', 'settimanale', 'mensile', 'annuale']).nullable()// daily, weekly, monthly, yearly
 
