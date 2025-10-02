@@ -13,7 +13,7 @@ export default class DeadlinesController {
     const deadline = await Deadline.create({
       title: data.title,
       description: data.description,
-      dueAt: DateTime.fromJSDate(data.due_at), // converto da Date JS a Luxon
+      dueAt: DateTime.fromJSDate(data.due_at),
       remindAt: data.remind_at ? DateTime.fromJSDate(data.remind_at) : null,
       status: data.status,
       repeat: data.repeat,
