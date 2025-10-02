@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { DateTime } from 'luxon'
 import User from '#models/user'
+import vine from '@vinejs/vine'
 
 export default class UsersController {
   /**
@@ -16,8 +17,18 @@ export default class UsersController {
    */
   async store({ request, response }: HttpContext) {
     try {
-      const data = request.only(['name', 'email', 'password'])
-
+      // Define validation schema
+      const schema = vine.object({
+        name: vine.string().minLength(3),
+        email: vine.string().email().unique({
+          table: 'users',
+          column: 'email',
+        }),
+        password: vine.string().minLength(6),
+      })
+      // Data validation
+      const data = await vine.validate({ schema, data: request.body() })
+      // Create user
       const user = await User.create({
         name: data.name,
         email: data.email,
@@ -28,7 +39,7 @@ export default class UsersController {
       await user.load('deadlines')
     } catch (error) {
       return response.status(400).json({
-        error: "Impossibile creare l'utente",
+        error: "Impossibile creare l'utente, controllare i dati quali(email / password)",
         message: error.message,
       })
     }
