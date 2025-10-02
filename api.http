@@ -28,5 +28,5 @@ Accept: application/json
 {
   "name": "Mario Rossi",
   "email": "example@ex.com",
-  "password": "password",
+  "password": "password"
 }
