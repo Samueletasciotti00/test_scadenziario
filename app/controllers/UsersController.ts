@@ -1,48 +1,23 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import { DateTime } from 'luxon'
+//import { DateTime } from 'luxon'
 import User from '#models/user'
-import vine from '@vinejs/vine'
+import { createUserValidator, updateUserValidator } from '#validators/user'
 
 export default class UsersController {
-  /**
-   * Display a list of resource
-   */
   async index({ response }: HttpContext) {
     const users = await User.all()
     return response.ok(users)
   }
 
-  /**
-   * Handle form submission for the create action
-   */
   async store({ request, response }: HttpContext) {
-    try {
-      // Define validation schema
-      const schema = vine.object({
-        name: vine.string().minLength(3),
-        email: vine.string().email().unique({
-          table: 'users',
-          column: 'email',
-        }),
-        password: vine.string().minLength(6),
-      })
-      // Data validation
-      const data = await vine.validate({ schema, data: request.body() })
-      // Create user
-      const user = await User.create({
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        createdAt: DateTime.now(),
-      })
 
-      await user.load('deadlines')
-    } catch (error) {
-      return response.status(400).json({
-        error: "Impossibile creare l'utente, controllare i dati quali(email / password)",
-        message: error.message,
-      })
-    }
+    // Validate incoming request data
+    const data = await request.validateUsing(createUserValidator)
+    // Create user from validated data
+    const user = await User.create(data)
+    await user.load('deadlines')
+
+    return response.created(user)
   }
 
   /**
@@ -66,16 +41,17 @@ export default class UsersController {
   async update({ params, request, response }: HttpContext) {
     try {
       const user = await User.findOrFail(params.id)
-      const data = request.only(['name', 'email', 'password'])
-
+      
+      // Validazione automatica
+      const data = await request.validateUsing(updateUserValidator)
+      
       user.merge(data)
       await user.save()
-
+      
       return response.ok(user)
     } catch (error) {
       return response.status(400).json({
-        error: "Impossibile aggiornare l'utente \ o non trovato",
-        message: error.message,
+        error: "Impossibile aggiornare l'utente o non trovato",
       })
     }
   }
