@@ -2,7 +2,10 @@ import vine from '@vinejs/vine'
 
 export const createUserValidator = vine.compile(
     vine.object({
-        name: vine.string().minLength(3),
+        name: vine.string().minLength(3).unique({
+            table: 'users',
+            column: 'name',
+        }),
         email: vine.string().email().unique({
             table: 'users',
             column: 'email',
