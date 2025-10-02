@@ -24,3 +24,9 @@ Accept: application/json
   "description": "Organizzare l'evento in sicurezza",
   "user_id": 1
 }
+
+{
+  "name": "Mario Rossi",
+  "email": "example@ex.com",
+  "password": "password",
+}
