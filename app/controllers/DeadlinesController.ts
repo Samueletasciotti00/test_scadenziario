@@ -1,52 +1,26 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Deadline from '#models/deadline'
 import { DateTime } from 'luxon'
-
+import { createDeadlineValidator, updateDeadlineValidator } from '#validators/deadline'
 export default class DeadlinesController {
-  /**
-   * GET /deadlines
-   * Ritorna tutte le deadline
-   */
   public async index({ response }: HttpContext) {
-    const deadlines = await Deadline.all()
+    const deadlines = await Deadline.query().preload('user')
     return response.ok(deadlines)
   }
 
-  /**
-   * POST /deadlines
-   * Crea una nuova deadline
-   */
   public async store({ request, response }: HttpContext) {
-    try {
-      const data = request.only([
-        'title',
-        'description',
-        'due_at',
-        'remind_at',
-        'status',
-        'repeat',
-        'user_id',
-      ])
-
-      const deadline = await Deadline.create({
-        title: data.title,
-        description: data.description,
-        dueAt: DateTime.fromISO(data.due_at),
-        remindAt: data.remind_at ? DateTime.fromISO(data.remind_at) : null,
-        status: data.status,
-        repeat: data.repeat,
-        userId: parseInt(data.user_id),
-      })
-
-      await deadline.load('user')
-
-      return response.status(201).json(deadline)
-    } catch (error) {
-      return response.status(400).json({
-        error: 'Impossibile creare la deadline',
-        message: error.message,
-      })
-    }
+    const data = await request.validateUsing(createDeadlineValidator)
+    const deadline = await Deadline.create({
+      title: data.title,
+      description: data.description,
+      dueAt: DateTime.fromJSDate(data.due_at), // converto da Date JS a Luxon
+      remindAt: data.remind_at ? DateTime.fromJSDate(data.remind_at) : null,
+      status: data.status,
+      repeat: data.repeat,
+      userId: data.user_id,
+    })
+    await deadline.load('user')
+    return response.created(deadline)
   }
   /**
    * Show individual record
