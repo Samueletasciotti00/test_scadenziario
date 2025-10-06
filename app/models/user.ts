@@ -31,7 +31,7 @@ class User extends compose(BaseModel, AuthFinder) {
   declare password: string
 
   @column()
-  declare role: 'USER' | 'ADMIN'
+  declare role: 'user' | 'admin'
   
   @hasMany(() => Deadline)
   declare deadlines: HasMany<typeof Deadline>
@@ -44,12 +44,11 @@ class User extends compose(BaseModel, AuthFinder) {
   declare updatedAt: DateTime | null
 
   static accessTokens = DbAccessTokensProvider.forModel(User, {
-    expiresIn: '30 days',
+    expiresIn: '30 minutes',
     prefix: 'oat_',
     table: 'auth_access_tokens',
     type: 'auth_token',
     tokenSecretLength: 40,
-
   })
 }
 

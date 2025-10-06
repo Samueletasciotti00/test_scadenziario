@@ -22,7 +22,9 @@ router.post('/logout', async (ctx) => {
   return new AuthController().logout(ctx)
 })
 
-
+// Rotte CRUD per deadlines e users (Manuale)
 router.resource('deadlines', DeadlinesController).apiOnly()
 router.resource('users', UsersController).apiOnly()
 
+// Rotta registrazione utente
+router.resource('auth', AuthController).only(['store'])

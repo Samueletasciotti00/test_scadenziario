@@ -19,7 +19,7 @@ class Deadline extends BaseModel {
   declare description: string | null
 
   @column.dateTime()
-  declare dueAt: DateTime
+  declare deadline: DateTime
 
   @column.dateTime()
   declare remindAt: DateTime | null

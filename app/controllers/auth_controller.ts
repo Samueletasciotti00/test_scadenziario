@@ -1,5 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import { createUserValidator, updateUserValidator } from '#validators/user'
+import { createAuthValidator } from '#validators/user'
 import User from '#models/user'
 import hash from '@adonisjs/core/services/hash'
 
@@ -7,7 +7,7 @@ export default class AuthController {
   // Register a new user
   public async register({ request, response }: HttpContext) {
     // Implementation for user registration
-    const data = await request.validateUsing(createUserValidator)
+    const data = await request.validateUsing(createAuthValidator)
     // Create user from validated data
     const user = await User.create(data)
     await user.load('deadlines')
