@@ -30,3 +30,19 @@ Accept: application/json
   "email": "example@ex.com",
   "password": "password"
 }
+
+# Registe from authController
+{
+  "name": "Mario Rossi Mori",
+  "email": "mario2@example.com",
+  "password": "password123",
+  "role": "USER"
+}
+
+# Login from authController
+{
+  "email": "mario2@example.com",
+  "password": "password123"
+}
+
+
