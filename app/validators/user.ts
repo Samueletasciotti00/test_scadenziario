@@ -13,7 +13,6 @@ export const createUserValidator = vine.compile(
     password: vine.string().minLength(6),
     role: vine
       .enum(['admin', 'user'])
-      .optional()
       .transform((value) => value ?? 'user'),
   })
 )

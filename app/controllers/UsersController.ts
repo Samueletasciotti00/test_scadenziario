@@ -14,10 +14,7 @@ export default class UsersController {
     // Validate incoming request data
     const data = await request.validateUsing(createUserValidator)
     // Create user from validated data
-    const user = await User.create({
-      ...data,
-      role: ('user' || 'admin' ) ?? 'user', // Imposto il ruolo predefinito a 'user'
-    })
+    const user = await User.create(data)
     await user.load('deadlines')
     return response.created(user)
   }
