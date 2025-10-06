@@ -1,14 +1,23 @@
 import { defineConfig } from '@adonisjs/auth'
 import { basicAuthGuard, basicAuthUserProvider } from '@adonisjs/auth/basic_auth'
 import type { InferAuthenticators, InferAuthEvents, Authenticators } from '@adonisjs/auth/types'
+import { tokensGuard, tokensUserProvider } from '@adonisjs/auth/access_tokens'
 
 const authConfig = defineConfig({
-  default: 'basicAuth',
+  default: 'api',   // mettere la guard token come default (opzionale)
   guards: {
     basicAuth: basicAuthGuard({
       provider: basicAuthUserProvider({
-        model: () => import('#models/user')
+        model: () => import('#models/user'),
       }),
+    }),
+
+    api: tokensGuard({
+      provider: tokensUserProvider({
+        model: () => import('#models/user'),
+        tokens: 'accessTokens' // nome statico che usi nel tuo model, se serve
+      }),
+      // puoi passare opzioni come tokenProvider, expiresIn etc qui se vuoi
     }),
   },
 })
