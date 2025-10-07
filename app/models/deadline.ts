@@ -13,6 +13,9 @@ class Deadline extends BaseModel {
   declare userId: number
 
   @column()
+  declare takenByUserId: number | null
+
+  @column()
   declare title: string | null
 
   @column()
