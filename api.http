@@ -15,9 +15,10 @@ POST http://127.0.0.1:3333/deadlines
 Content-Type: application/json
 Accept: application/json
 
+# Create Deadline from deadlineController
 {
-  "title": "progetto_protezione_civile2",
-  "due_at": "2025-10-25T17:00:00.000Z",
+  "title": "progetto_protezione_civile",
+  "deadline": "2025-10-25T17:00:00.000Z",
   "remind_at": "2025-10-24T09:00:00.000Z",
   "status": "sospeso",
   "repeat": "giornaliero",
@@ -25,24 +26,35 @@ Accept: application/json
   "user_id": 1
 }
 
+# Create user from userController
 {
   "name": "Mario Rossi",
   "email": "example@ex.com",
   "password": "password"
 }
 
-# Registe from authController
+# Register from authController
 {
-  "name": "Mario Rossi Mori",
-  "email": "mario2@example.com",
+  "name": "Admin",
+  "email": "admin@example.com",
   "password": "password123",
-  "role": "USER"
+  "role": "admin"
+}
+{
+  "name": "User",
+  "email": "user@example.com",
+  "password": "password123",
+  "role": "user"
 }
 
 # Login from authController
 {
-  "email": "mario2@example.com",
+  "email": "admin@example.com",
   "password": "password123"
 }
 
+// Update user to admin role from userController
+{
+  "role": "admin"
+}
 
